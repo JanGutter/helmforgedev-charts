@@ -3,7 +3,7 @@ apiVersion: v2
 name: questdb
 description: Production-ready standalone QuestDB with secure authentication, persistence and observability.
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: 10.0.1
 kubeVersion: ">=1.30.0-0"
 home: https://helmforge.dev/docs/charts/questdb
@@ -18,7 +18,7 @@ keywords: [questdb, database, time-series, analytics, kubernetes]
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "BREAKING: add chart (#1426)"
+      description: "BREAKING: add chart (#1475)"
   artifacthub.io/category: database
   artifacthub.io/license: Apache-2.0
   artifacthub.io/prerelease: "true"
