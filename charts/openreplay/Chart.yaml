@@ -3,7 +3,7 @@ apiVersion: v2
 name: openreplay
 description: Production-ready OpenReplay session replay stack without a bundled ingress controller
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: "1.28.0"
 kubeVersion: ">=1.31.0-0"
 home: https://openreplay.com/
@@ -19,10 +19,10 @@ keywords:
   - observability
   - analytics
 annotations:
+  artifacthub.io/changes: |
+    - kind: changed
+      description: "BREAKING: add chart (#1476)"
   artifacthub.io/category: monitoring-logging
-  artifacthub.io/changes: |-
-    - kind: added
-      description: Initial OpenReplay chart with portable Ingress and Gateway API support.
   artifacthub.io/license: AGPL-3.0-only
   helmforge.dev/maturity: beta
   helmforge.dev/source-issue: "1427"
