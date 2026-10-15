@@ -3,7 +3,7 @@ apiVersion: v2
 name: bytestash
 description: Private code snippets with protected first-account bootstrap, retained JWT authentication and persistent SQLite.
 type: application
-version: 1.0.1
+version: 1.0.2
 appVersion: 1.5.14
 kubeVersion: '>=1.26.0-0'
 maintainers:
@@ -21,10 +21,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/bytestash.png
 annotations:
   artifacthub.io/changes: |
-    - kind: security
-      description: "upgrade ByteStash to 1.5.14 with snippet ownership enforcement (#1435)"
     - kind: changed
-      description: "upgrade to 1.5.13 (#1361)"
+      description: "bump app to 1.5.14 (#1494)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
