@@ -3,7 +3,7 @@ apiVersion: v2
 name: cloudflared
 description: Cloudflare Tunnel client for secure, outbound-only connections between Kubernetes services and Cloudflare's network
 type: application
-version: 1.5.17
+version: 1.5.18
 appVersion: "2026.10.0"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -24,9 +24,7 @@ icon: https://helmforge.dev/icons/charts/cloudflared.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "upgrade cloudflared to 2026.10.0 (#1439)"
-    - kind: changed
-      description: "upgrade to 2026.9.3 (#1364)"
+      description: "bump app to 2026.10.0 (#1498)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
