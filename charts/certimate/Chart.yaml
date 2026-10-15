@@ -3,7 +3,7 @@ apiVersion: v2
 name: certimate
 description: Self-hosted SSL certificate automation platform for issuing, deploying, renewing, and monitoring certificates
 type: application
-version: 1.0.9
+version: 1.0.10
 appVersion: "0.4.35"
 home: https://helmforge.dev/docs/charts/certimate
 sources:
@@ -25,9 +25,7 @@ icon: https://helmforge.dev/icons/charts/certimate.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "upgrade Certimate to 0.4.35 (#1436)"
-    - kind: changed
-      description: "upgrade to 0.4.34 (#1362)"
+      description: "bump app to 0.4.35 (#1495)"
   artifacthub.io/category: security
   artifacthub.io/license: Apache-2.0
   artifacthub.io/prerelease: "false"
