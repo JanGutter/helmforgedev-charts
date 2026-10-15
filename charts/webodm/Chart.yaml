@@ -3,7 +3,7 @@ apiVersion: v2
 name: webodm
 description: WebODM aerial imagery processing with persistent workers and optional GPU acceleration
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: "3.3.0"
 kubeVersion: ">=1.26.0-0"
 home: https://helmforge.dev/docs/charts/webodm
@@ -19,7 +19,7 @@ maintainers:
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "BREAKING: add chart (#1385)"
+      description: "bump HelmForge subchart dependencies to latest minor/patch (#1428)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
