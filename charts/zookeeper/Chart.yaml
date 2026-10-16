@@ -3,7 +3,7 @@ apiVersion: v2
 name: zookeeper
 description: Apache ZooKeeper Helm chart for production-ready replicated coordination ensembles
 type: application
-version: 1.0.2
+version: 1.0.3
 appVersion: "3.9.6"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -24,7 +24,7 @@ icon: https://helmforge.dev/icons/charts/zookeeper.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "update Apache ZooKeeper to 3.9.6 (#1473)"
+      description: "update image to 3.9.6 (#1532)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
