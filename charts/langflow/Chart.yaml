@@ -3,7 +3,7 @@ apiVersion: v2
 name: langflow
 description: Langflow visual AI workflow builder
 type: application
-version: 2.0.2
+version: 2.0.3
 appVersion: "1.12.6"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -21,7 +21,7 @@ icon: https://helmforge.dev/icons/charts/langflow.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "bump langflow to 1.12.6 with security and MCP fixes (#1454)"
+      description: "bump app to 1.12.6 (#1512)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
