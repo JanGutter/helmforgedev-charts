@@ -3,7 +3,7 @@ apiVersion: v2
 name: matterbridge
 description: Production-ready Matter plugin manager for bridging smart-home platforms to Matter ecosystems
 type: application
-version: 1.0.5
+version: 1.0.6
 appVersion: "3.10.13"
 kubeVersion: ">=1.26.0-0"
 home: https://helmforge.dev/docs/charts/matterbridge
@@ -26,7 +26,7 @@ icon: https://helmforge.dev/icons/charts/matterbridge.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "upgrade to 3.10.13 with device lifecycle and runtime fixes (#1455)"
+      description: "bump app to 3.10.13 (#1513)"
   artifacthub.io/category: integration-delivery
   artifacthub.io/license: Apache-2.0
   artifacthub.io/prerelease: "false"
