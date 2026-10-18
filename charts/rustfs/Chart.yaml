@@ -3,7 +3,7 @@ apiVersion: v2
 name: rustfs
 description: RustFS S3-compatible object storage with standalone, distributed cluster, and bucket/site replication support
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: "1.0.1"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -24,8 +24,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/rustfs.png
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: "add chart with cluster and replication support (#1535)"
+    - kind: fixed
+      description: "use selectorLabels in pod template and canonical NOTES structure (#1556)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
