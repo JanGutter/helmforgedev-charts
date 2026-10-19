@@ -2,7 +2,7 @@
 apiVersion: v2
 name: phpmyadmin
 type: application
-version: 2.1.0
+version: 2.1.1
 appVersion: "5.2.3"
 kubeVersion: ">=1.26.0-0"
 description: A Helm chart for deploying phpMyAdmin on Kubernetes as a web-based MySQL/MariaDB administration tool
@@ -24,8 +24,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/phpmyadmin.png
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: "add extraEgress to networkpolicy and standardize notes (#1565)"
+    - kind: fixed
+      description: "implement extraEgress in networkpolicy and fix notes parameter references (#1568)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
