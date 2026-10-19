@@ -3,7 +3,7 @@ apiVersion: v2
 name: superset
 description: Apache Superset BI platform with web, worker, and beat deployments backed by PostgreSQL and Redis
 type: application
-version: 1.4.0
+version: 1.4.1
 appVersion: "6.1.0"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -24,8 +24,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/superset.png
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: "support additional Python packages (#1539)"
+    - kind: fixed
+      description: "add global section to all value.schema.json files (#1227)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
