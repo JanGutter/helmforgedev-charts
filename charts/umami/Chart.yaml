@@ -3,7 +3,7 @@ apiVersion: v2
 name: umami
 description: Umami privacy-first web analytics with PostgreSQL, Gateway API, External Secrets, backups, and production controls
 type: application
-version: 2.4.0
+version: 2.4.1
 appVersion: "3.4.0"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -26,8 +26,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/umami.png
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: "add extraEgress to networkpolicy and standardize notes (#1566)"
+    - kind: fixed
+      description: "add global section to all value.schema.json files (#1227)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
