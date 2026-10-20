@@ -2,7 +2,7 @@
 apiVersion: v2
 name: pihole
 type: application
-version: 2.1.1
+version: 2.1.2
 appVersion: "2026.10.0"
 kubeVersion: ">=1.26.0-0"
 description: A Helm chart for deploying Pi-hole DNS sinkhole on Kubernetes
@@ -24,9 +24,7 @@ icon: https://helmforge.dev/icons/charts/pihole.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "bump pihole image to 2026.10.0 (#1601)"
-    - kind: fixed
-      description: "add global section to all value.schema.json files (#1227)"
+      description: "bump pihole to 2026.10.0 (#1622)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
