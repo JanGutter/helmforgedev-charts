@@ -3,7 +3,7 @@ apiVersion: v2
 name: appwrite
 description: Appwrite self-hosted backend-as-a-service platform with MariaDB and Redis
 type: application
-version: 2.0.6
+version: 2.0.7
 appVersion: "2.5.0"
 kubeVersion: ">=1.26.0-0"
 icon: https://helmforge.dev/icons/charts/appwrite.png
@@ -27,9 +27,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "bump appwrite image to 2.5.0 and console to 1.2.74-self-hosted (#1574)"
-    - kind: changed
-      description: "bump mariadb subchart dependency to 2.2.0 (GR-074)"
+      description: "bump appwrite to 2.5.0 and console to 1.2.74 (#1612)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
