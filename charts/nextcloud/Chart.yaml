@@ -3,7 +3,7 @@ apiVersion: v2
 name: nextcloud
 description: Nextcloud file collaboration with PostgreSQL, Redis and coordinated backups
 type: application
-version: 2.0.3
+version: 2.0.4
 appVersion: "35.0.2"
 kubeVersion: ">=1.29.0-0"
 home: https://helmforge.dev/docs/charts/nextcloud
@@ -19,9 +19,7 @@ maintainers:
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "bump nextcloud image to 35.0.2-apache (#1598)"
-    - kind: changed
-      description: "bump HelmForge subchart dependencies to latest minor/patch (#1573)"
+      description: "bump nextcloud to 35.0.2-apache (#1626)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
