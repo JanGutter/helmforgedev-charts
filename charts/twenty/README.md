@@ -5,7 +5,7 @@ encryption identity.
 
 ## Operating contract
 
-- Official `twentycrm/twenty:v2.46.0` image pinned by immutable manifest digest.
+- Official `twentycrm/twenty:v2.49.0` image pinned by immutable manifest digest.
 - One Recreate Pod serializes migrations and shares local files between server and worker. This chart does not claim
   application HA or horizontal scaling.
 - Native first-administrator and workspace activation before public startup, followed by explicit closure of public
@@ -68,6 +68,12 @@ AI providers and hosted function execution are outside the tested integration se
 
 See [dependencies](docs/dependencies.md), [storage](docs/storage.md), [SMTP](docs/smtp.md) and
 [observability](docs/observability.md).
+
+## Upgrading to 2.49.0
+
+Twenty 2.49.0 includes minor upstream performance improvements, bug fixes and updated workspace drivers. Database migrations run automatically on server Pod startup. No manual migration or breaking values changes required.
+
+Upstream release notes: [v2.49.0](https://github.com/twentyhq/twenty/releases/tag/twenty%2Fv2.49.0).
 
 ## Upgrading to 2.46.0
 
