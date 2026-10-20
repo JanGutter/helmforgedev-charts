@@ -3,7 +3,7 @@ apiVersion: v2
 name: poznote
 description: Self-hosted note-taking and documentation platform with SQLite persistence
 type: application
-version: 2.0.7
+version: 2.0.8
 appVersion: "6.121.0"
 kubeVersion: ">=1.26.0-0"
 home: https://helmforge.dev/docs/charts/poznote
@@ -25,9 +25,7 @@ icon: https://helmforge.dev/icons/charts/poznote.png
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: "bump poznote image to 6.121.0 (#1602)"
-    - kind: fixed
-      description: "add global section to all value.schema.json files (#1227)"
+      description: "bump poznote to 6.121.0 (#1621)"
   artifacthub.io/category: skip-prediction
   artifacthub.io/license: Apache-2.0
   artifacthub.io/prerelease: "false"
