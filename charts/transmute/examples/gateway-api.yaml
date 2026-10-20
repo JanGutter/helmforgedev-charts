@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+# Gateway API HTTPRoute configuration
+httpRoute:
+  enabled: true
+  hostnames:
+    - transmute.example.com
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system

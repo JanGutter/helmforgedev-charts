@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 suite: deployment tests
 templates:
   - deployment.yaml
@@ -21,7 +22,7 @@ tests:
           path: spec.template.spec.securityContext.runAsNonRoot
           value: true
       - equal:
-          path: spec.template.spec.securityContext.capabilities.drop[0]
+          path: spec.template.spec.containers[0].securityContext.capabilities.drop[0]
           value: ALL
 
   - it: enables OIDC environment variables when configured
@@ -49,7 +50,7 @@ tests:
     set:
       ingress:
         enabled: true
-        className: "nginx"
+        ingressClassName: "nginx"
         hosts:
           - host: "transmute.example.com"
             paths:
