@@ -3,7 +3,7 @@ apiVersion: v2
 name: ghost
 description: Ghost modern publishing platform and headless CMS with MySQL backend
 type: application
-version: 1.2.12
+version: 1.2.13
 appVersion: "6.71.0"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -24,8 +24,8 @@ sources:
   - https://github.com/TryGhost/Ghost
 annotations:
   artifacthub.io/changes: |
-    - kind: fixed
-      description: "add global section to all value.schema.json files (#1227)"
+    - kind: changed
+      description: "bump ghost to 6.71.0 (#1648)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
