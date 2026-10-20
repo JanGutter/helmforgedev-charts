@@ -3,7 +3,7 @@ apiVersion: v2
 name: transmute
 description: Production-ready Helm chart for Transmute, a self-hosted audio and video transcoding service with queue management, hardware acceleration, and OIDC.
 type: application
-version: 1.2.0
+version: 1.3.0
 appVersion: "v2.1.1"
 home: https://github.com/helmforgedev/charts/tree/main/charts/transmute
 icon: https://helmforge.dev/icons/charts/transmute.png
