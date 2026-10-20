@@ -3,7 +3,7 @@ apiVersion: v2
 name: mongodb
 description: MongoDB Helm Chart - standalone, replica set, or sharded cluster using the official MongoDB image
 type: application
-version: 1.8.5
+version: 1.8.6
 appVersion: "9.0.4"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -22,8 +22,8 @@ sources:
 icon: https://helmforge.dev/icons/charts/mongodb.png
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: "bump mongo to 9.0.4 (#1629)"
+    - kind: fixed
+      description: "align image 9.0.4 and restore chart version (#1631)"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
