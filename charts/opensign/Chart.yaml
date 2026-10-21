@@ -3,7 +3,7 @@ apiVersion: v2
 name: opensign
 description: Production-ready OpenSign electronic signature platform with MongoDB and durable document storage
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: "2.41.3"
 kubeVersion: ">=1.26.0-0"
 maintainers:
@@ -27,8 +27,8 @@ dependencies:
     condition: mongodb.enabled
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: "initial production-ready OpenSign chart"
+    - kind: changed
+      description: "BREAKING: add chart"
   artifacthub.io/maintainers: |
     - name: HelmForge
       email: berlofa@helmforge.dev
