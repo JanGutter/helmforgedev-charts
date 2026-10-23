@@ -54,7 +54,7 @@ Read before choosing a profile:
 - **Profile-driven** — `dev`, `staging`, `production-ha` presets with tuned defaults
 - **Multi-role StatefulSets** — dedicated pods per role: master, data, coordinating
 - **Auto heap sizing** — 50% rule applied from container memory limit (max 31 GB), no manual JVM tuning
-- **Split-brain prevention** — validates odd master count, auto-calculates `minimum_master_nodes` quorum
+- **Split-brain prevention** — validates an odd master count for multi-node clusters
 - **Data tiers** — optional hot/warm nodes with separate storage classes and ILM attribute routing
 - **S3 snapshots** — scheduled CronJob with configurable retention, repository auto-registration
 - **ILM policies** — pre-built templates for logs, metrics, and traces (hot→warm→cold→delete)
@@ -62,6 +62,8 @@ Read before choosing a profile:
 - **Monitoring** — Prometheus exporter sidecar, ServiceMonitor, 6 alert rules, 3 Grafana dashboards
 - **Optional Kibana** — auto-connected with shared TLS and Ingress support
 - **PodDisruptionBudgets** — for master, data, coordinating, hot, and warm roles
+- **Authoritative configuration** — one generated `elasticsearch.yml` is mounted into every node role
+- **Independent ports** — process listeners, Services, Kibana, and metrics ports are configurable independently
 
 ## Configuration
 
@@ -133,6 +135,38 @@ monitoring:
     dashboards: true
 ```
 
+### Elasticsearch configuration and ports
+
+The chart renders one `elasticsearch.yml` ConfigMap and mounts it at
+`/usr/share/elasticsearch/config/elasticsearch.yml` in every Elasticsearch
+container. Use `extraConfig` for additional settings. Chart-managed cluster,
+discovery, security, and listener settings are reserved so all roles remain
+consistent.
+
+```yaml
+containerPorts:
+  http: 19200
+  transport: 19300
+
+service:
+  port: 9200
+
+extraConfig:
+  cluster.routing.allocation.disk.watermark.low: "82%"
+```
+
+`service.port` is the client-facing Kubernetes Service port. It targets the
+named HTTP container port. Inter-node transport is exposed only by the role
+headless Services.
+
+The main Service selects coordinating nodes when present, then regular data
+nodes, then an enabled data tier, and finally master nodes for the dev profile.
+It never selects Kibana pods.
+
+Elasticsearch requires `vm.max_map_count=262144` on every Kubernetes node.
+Configure it at the node level. `sysctlInit.enabled` is an opt-in fallback that
+requires permission to run a privileged init container.
+
 ### With Data Tiers
 
 ```yaml
@@ -162,6 +196,8 @@ dataTiers:
 | `clusterName` | Elasticsearch cluster name | `helmforge-cluster` |
 | `image.repository` | Elasticsearch image | `docker.io/library/elasticsearch` |
 | `image.tag` | Image tag | `9.5.5` |
+| `containerPorts.http` | Elasticsearch HTTP process listener | `9200` |
+| `containerPorts.transport` | Elasticsearch transport process listener | `9300` |
 | `nameOverride` | Override chart name | `""` |
 | `fullnameOverride` | Override full release name | `""` |
 
@@ -219,6 +255,8 @@ dataTiers:
 | `backup.s3.region` | AWS region | `us-east-1` |
 | `backup.s3.endpoint` | Custom endpoint (MinIO, GCS, etc.) | `""` |
 | `backup.s3.existingSecret` | Secret with access-key / secret-key | `""` |
+| `backup.s3.existingSecretAccessKeyKey` | Access-key field in the existing or generated Secret | `access-key` |
+| `backup.s3.existingSecretSecretKeyKey` | Secret-key field in the existing or generated Secret | `secret-key` |
 
 ### ILM Policies
 
@@ -250,6 +288,8 @@ dataTiers:
 | Parameter | Description | Default |
 |---|---|---|
 | `monitoring.enabled` | Deploy Prometheus exporter sidecar | `false` |
+| `monitoring.containerPort` | Exporter process listener | `9114` |
+| `monitoring.service.port` | Metrics Service port | `9114` |
 | `monitoring.image.repository` | Exporter image | `prometheuscommunity/elasticsearch-exporter` |
 | `monitoring.image.tag` | Exporter tag | `v1.8.0` |
 | `monitoring.serviceMonitor.enabled` | Create ServiceMonitor | `false` |
@@ -264,6 +304,8 @@ dataTiers:
 | `kibana.enabled` | Deploy Kibana alongside Elasticsearch | `false` |
 | `kibana.image.tag` | Kibana version (must match ES version) | `9.5.5` |
 | `kibana.replicaCount` | Kibana replica count | `1` |
+| `kibana.containerPort` | Kibana process listener | `5601` |
+| `kibana.service.port` | Kibana Service port | `5601` |
 | `kibana.ingress.enabled` | Expose Kibana via Ingress | `false` |
 | `kibana.ingress.hosts` | Ingress hostnames | `[kibana.example.com]` |
 
@@ -272,8 +314,7 @@ dataTiers:
 | Parameter | Description | Default |
 |---|---|---|
 | `service.type` | Service type for HTTP access | `ClusterIP` |
-| `service.httpPort` | Elasticsearch HTTP port | `9200` |
-| `service.transportPort` | Inter-node transport port | `9300` |
+| `service.port` | Client-facing Elasticsearch HTTP Service port | `9200` |
 | `service.ipFamilyPolicy` | Service dual-stack policy for HTTP and headless Services | `null` |
 | `service.ipFamilies` | Service IP families for HTTP and headless Services | `[]` |
 
@@ -285,31 +326,117 @@ dataTiers:
 | `serviceAccount.name` | ServiceAccount name override | `""` |
 | `serviceAccount.automountServiceAccountToken` | Mount Kubernetes API token into workload pods | `false` |
 
+### Gateway API and External Secrets
+
+```yaml
+gatewayAPI:
+  enabled: true
+  httpRoutes:
+    - name: public
+      hostnames: [elasticsearch.example.com]
+      parentRefs:
+        - name: shared-gateway
+          namespace: gateway-system
+
+externalSecrets:
+  enabled: true
+  refreshInterval: 1h
+  items:
+    - name: credentials
+      spec:
+        secretStoreRef:
+          name: production-secrets
+          kind: ClusterSecretStore
+        target:
+          creationPolicy: Owner
+        data:
+          - secretKey: elastic-password
+            remoteRef:
+              key: elasticsearch
+              property: elastic-password
+          - secretKey: kibana-system-password
+            remoteRef:
+              key: elasticsearch
+              property: kibana-system-password
+```
+
+The Gateway controller and External Secrets Operator CRDs must already exist.
+The chart does not install either controller.
+
 ## Security Scan
 
 ### Security Scan: `elasticsearch`
 
 | Framework | Score |
 |-----------|-------|
-| MITRE + NSA + SOC2 | **83.33%** |
+| MITRE + NSA + SOC2 | **86.36364%** |
 
-Security posture acceptable.
+> Security posture acceptable.
 
 ### Other
 
 | Parameter | Description | Default |
 |---|---|---|
-| `sysctlInit.enabled` | Set `vm.max_map_count=262144` via init container | `true` |
+| `sysctlInit.enabled` | Set `vm.max_map_count=262144` through a privileged init container | `false` |
 | `terminationGracePeriodSeconds` | Grace period for pod shutdown | `120` |
 | `extraEnv` | Extra environment variables | `[]` |
 | `extraVolumes` | Extra volumes | `[]` |
 | `extraVolumeMounts` | Extra volume mounts | `[]` |
-| `extraConfig` | Extra elasticsearch.yml settings | `{}` |
+| `extraConfig` | Additional mounted `elasticsearch.yml` settings | `{}` |
 | `nodeSelector` | Global node selector | `{}` |
 | `tolerations` | Global tolerations | `[]` |
 | `priorityClassName` | Priority class | `""` |
 
 ## Upgrade Notes
+
+### Version 2 breaking changes
+
+Version 2 fixes the previously generated-but-unmounted `elasticsearch.yml` and
+replaces ambiguous port values with an explicit process/Service contract:
+
+| Version 1 | Version 2 |
+|---|---|
+| `service.httpPort` | `service.port` |
+| `service.transportPort` | removed; no direct replacement |
+| fixed HTTP listener `9200` | `containerPorts.http` |
+| fixed Kibana listener `5601` | `kibana.containerPort` |
+| fixed exporter listener `9114` | `monitoring.containerPort` |
+| `gateway.*` | `gatewayAPI.httpRoutes[]` |
+| flat `externalSecrets.*` | `externalSecrets.items[]` |
+| privileged sysctl init enabled | `sysctlInit.enabled: false` |
+
+Remove any manual `extraVolumes`/`extraVolumeMounts` workaround that mounted
+`elasticsearch.yml`; the chart now owns that exact mount path. Review
+`extraConfig` before upgrading because those settings now take effect and cause
+a rolling restart. The client Service now exposes HTTP only and targets one
+intentional node role instead of every pod sharing the release labels.
+
+Version 1 `service.transportPort` changed only Service metadata while the
+Elasticsearch transport listener remained on `9300`. Do not copy a customized
+value into `containerPorts.transport`; set it only when you intentionally want
+to change the real inter-node listener and can coordinate that change across
+every node during the upgrade.
+
+For an existing non-dev release with `dataTiers.hot.enabled` or
+`dataTiers.warm.enabled`, recreate each enabled tier StatefulSet once before the
+upgrade because Kubernetes does not allow changing `spec.serviceName` in place:
+
+```bash
+kubectl delete statefulset <release>-elasticsearch-hot -n <namespace> --cascade=orphan
+kubectl delete statefulset <release>-elasticsearch-warm -n <namespace> --cascade=orphan
+```
+
+Run `helm upgrade` after deleting only the enabled tier StatefulSets. Orphan
+propagation keeps their pods running, and the replacement StatefulSets reuse
+those pods through unchanged selectors. Existing PVCs are reused by name; they
+are not adopted through StatefulSet ownership.
+
+For External Secrets, an item named `credentials` defaults its target Secret to
+`<release>-elasticsearch-credentials`, which is the Secret consumed by the
+workloads. Use keys `elastic-password` and, when Kibana security is enabled,
+`kibana-system-password`.
+
+### Application version 9.5.5
 
 `docker.io/library/elasticsearch:9.5.5` contains upstream security fixes and
 correctness fixes for replica sequence numbers, request-breaker cleanup, search
